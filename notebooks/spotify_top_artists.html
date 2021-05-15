@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 800px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#648FFF", "id": 0, "label": "Lizzy McAlpine", "shape": "dot", "size": 35, "title": "1, Lizzy McAlpine: [\u0027alt z\u0027, \u0027boston folk\u0027, \u0027indie cafe pop\u0027, \u0027indie pop\u0027]"}, {"color": "#648FFF", "id": 2, "label": "dodie", "shape": "dot", "size": 28, "title": "3, dodie: [\u0027alt z\u0027, \u0027indie pop\u0027, \u0027pop\u0027]"}, {"color": "#648FFF", "id": 3, "label": "Lake Street Dive", "shape": "dot", "size": 27, "title": "4, Lake Street Dive: [\u0027boston rock\u0027, \u0027indie folk\u0027, \u0027indie pop\u0027, \u0027new americana\u0027, \u0027stomp and holler\u0027]"}, {"color": "#648FFF", "id": 12, "label": "Sammy Rae \u0026 The Friends", "shape": "dot", "size": 18, "title": "13, Sammy Rae \u0026 The Friends: [\u0027indie pop\u0027, \u0027nyc pop\u0027]"}, {"color": "#DC267F", "id": 1, "label": "Taylor Swift", "shape": "dot", "size": 29, "title": "2, Taylor Swift: [\u0027pop\u0027, \u0027post-teen pop\u0027]"}, {"color": "#FE6100", "id": 10, "label": "Billie Eilish", "shape": "dot", "size": 20, "title": "11, Billie Eilish: [\u0027electropop\u0027, \u0027pop\u0027]"}, {"color": "#FFB000", "id": 13, "label": "Olivia Rodrigo", "shape": "dot", "size": 17, "title": "14, Olivia Rodrigo: [\u0027pop\u0027, \u0027post-teen pop\u0027]"}, {"color": "#FE6100", "id": 15, "label": "Daniel Caesar", "shape": "dot", "size": 15, "title": "16, Daniel Caesar: [\u0027canadian contemporary r\u0026b\u0027, \u0027pop\u0027, \u0027r\u0026b\u0027]"}, {"color": "#648FFF", "id": 16, "label": "Sara Bareilles", "shape": "dot", "size": 14, "title": "17, Sara Bareilles: [\u0027acoustic pop\u0027, \u0027dance pop\u0027, \u0027lilith\u0027, \u0027neo mellow\u0027, \u0027pop\u0027, \u0027pop rock\u0027, \u0027post-teen pop\u0027]"}, {"color": "#FE6100", "id": 18, "label": "Harry Styles", "shape": "dot", "size": 12, "title": "19, Harry Styles: [\u0027pop\u0027, \u0027post-teen pop\u0027]"}, {"color": "#FFB000", "id": 19, "label": "Kacey Musgraves", "shape": "dot", "size": 11, "title": "20, Kacey Musgraves: [\u0027contemporary country\u0027, \u0027country dawn\u0027, \u0027pop\u0027, \u0027post-teen pop\u0027, \u0027texas country\u0027]"}, {"color": "#FFB000", "id": 23, "label": "Hozier", "shape": "dot", "size": 10, "title": "24, Hozier: [\u0027irish singer-songwriter\u0027, \u0027modern rock\u0027, \u0027pop\u0027]"}, {"color": "#FE6100", "id": 24, "label": "One Direction", "shape": "dot", "size": 10, "title": "25, One Direction: [\u0027boy band\u0027, \u0027pop\u0027, \u0027post-teen pop\u0027, \u0027talent show\u0027]"}, {"color": "#648FFF", "id": 4, "label": "Lawrence", "shape": "dot", "size": 26, "title": "5, Lawrence: [\u0027nyc pop\u0027, \u0027retro soul\u0027]"}, {"color": "#648FFF", "id": 8, "label": "Jeremy Jordan", "shape": "dot", "size": 22, "title": "9, Jeremy Jordan: [\u0027broadway\u0027, \u0027hollywood\u0027, \u0027show tunes\u0027]"}, {"color": "#785EF0", "id": 9, "label": "Katrina Lenk", "shape": "dot", "size": 21, "title": "10, Katrina Lenk: [\u0027broadway\u0027]"}, {"color": "#785EF0", "id": 11, "label": "The Band\u0027s Visit Original Broadway Band", "shape": "dot", "size": 19, "title": "12, The Band\u0027s Visit Original Broadway Band: [\u0027broadway\u0027]"}, {"color": "#785EF0", "id": 14, "label": "Ben Fankhauser", "shape": "dot", "size": 16, "title": "15, Ben Fankhauser: [\u0027broadway\u0027, \u0027hollywood\u0027, \u0027show tunes\u0027]"}, {"color": "#648FFF", "id": 21, "label": "Mandy Gonzalez", "shape": "dot", "size": 10, "title": "22, Mandy Gonzalez: [\u0027broadway\u0027, \u0027hollywood\u0027, \u0027show tunes\u0027]"}, {"color": "#648FFF", "id": 22, "label": "\u0027In The Heights\u0027 Original Broadway Company", "shape": "dot", "size": 10, "title": "23, \u0027In The Heights\u0027 Original Broadway Company: [\u0027broadway\u0027, \u0027show tunes\u0027]"}, {"color": "#FFB000", "id": 20, "label": "Lin-Manuel Miranda", "shape": "dot", "size": 10, "title": "21, Lin-Manuel Miranda: [\u0027hollywood\u0027, \u0027show tunes\u0027]"}, {"color": "#648FFF", "id": 17, "label": "Us The Duo", "shape": "dot", "size": 13, "title": "18, Us The Duo: [\u0027folk-pop\u0027, \u0027indiecoustica\u0027, \u0027neo mellow\u0027, \u0027viral pop\u0027]"}, {"color": "#648FFF", "id": 5, "label": "John Denver", "shape": "dot", "size": 25, "title": "6, John Denver: [\u0027adult standards\u0027, \u0027classic country pop\u0027, \u0027folk\u0027, \u0027folk rock\u0027, \u0027mellow gold\u0027, \u0027soft rock\u0027]"}, {"color": "#FFB000", "id": 6, "label": "The Beatles", "shape": "dot", "size": 24, "title": "7, The Beatles: [\u0027beatlesque\u0027, \u0027british invasion\u0027, \u0027classic rock\u0027, \u0027merseybeat\u0027, \u0027psychedelic rock\u0027, \u0027rock\u0027]"}, {"color": "#648FFF", "id": 7, "label": "Louie Zong", "shape": "dot", "size": 23, "title": "8, Louie Zong: [\u0027otacore\u0027, \u0027weirdcore\u0027]"}]);
+        edges = new vis.DataSet([{"color": "#000000", "from": 0, "title": "alt z, indie pop", "to": 2, "weight": 1, "width": 3}, {"color": "#000000", "from": 0, "title": "indie pop", "to": 3, "weight": 1, "width": 1}, {"color": "#000000", "from": 0, "title": "indie pop", "to": 12, "weight": 1, "width": 1}, {"color": "#000000", "from": 1, "title": "pop", "to": 2, "weight": 1, "width": 1}, {"color": "#000000", "from": 1, "title": "pop", "to": 10, "weight": 1, "width": 1}, {"color": "#000000", "from": 1, "title": "pop, post-teen pop", "to": 13, "weight": 1, "width": 3}, {"color": "#000000", "from": 1, "title": "pop", "to": 15, "weight": 1, "width": 1}, {"color": "#000000", "from": 1, "title": "pop, post-teen pop", "to": 16, "weight": 1, "width": 3}, {"color": "#000000", "from": 1, "title": "pop, post-teen pop", "to": 18, "weight": 1, "width": 3}, {"color": "#000000", "from": 1, "title": "pop, post-teen pop", "to": 19, "weight": 1, "width": 3}, {"color": "#000000", "from": 1, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 1, "title": "pop, post-teen pop", "to": 24, "weight": 1, "width": 3}, {"color": "#000000", "from": 2, "title": "indie pop", "to": 3, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "indie pop", "to": 12, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 10, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 13, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 15, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 16, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 18, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 19, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 2, "title": "pop", "to": 24, "weight": 1, "width": 1}, {"color": "#000000", "from": 3, "title": "indie pop", "to": 12, "weight": 1, "width": 1}, {"color": "#000000", "from": 4, "title": "nyc pop", "to": 12, "weight": 1, "width": 1}, {"color": "#000000", "from": 8, "title": "broadway", "to": 9, "weight": 1, "width": 1}, {"color": "#000000", "from": 8, "title": "broadway", "to": 11, "weight": 1, "width": 1}, {"color": "#000000", "from": 8, "title": "broadway, hollywood, show tunes", "to": 14, "weight": 1, "width": 5}, {"color": "#000000", "from": 8, "title": "broadway, hollywood, show tunes", "to": 21, "weight": 1, "width": 5}, {"color": "#000000", "from": 8, "title": "broadway, show tunes", "to": 22, "weight": 1, "width": 3}, {"color": "#000000", "from": 8, "title": "hollywood, show tunes", "to": 20, "weight": 1, "width": 3}, {"color": "#000000", "from": 9, "title": "broadway", "to": 11, "weight": 1, "width": 1}, {"color": "#000000", "from": 9, "title": "broadway", "to": 14, "weight": 1, "width": 1}, {"color": "#000000", "from": 9, "title": "broadway", "to": 21, "weight": 1, "width": 1}, {"color": "#000000", "from": 9, "title": "broadway", "to": 22, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 13, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 15, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 16, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 18, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 19, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 10, "title": "pop", "to": 24, "weight": 1, "width": 1}, {"color": "#000000", "from": 11, "title": "broadway", "to": 14, "weight": 1, "width": 1}, {"color": "#000000", "from": 11, "title": "broadway", "to": 21, "weight": 1, "width": 1}, {"color": "#000000", "from": 11, "title": "broadway", "to": 22, "weight": 1, "width": 1}, {"color": "#000000", "from": 13, "title": "pop", "to": 15, "weight": 1, "width": 1}, {"color": "#000000", "from": 13, "title": "pop, post-teen pop", "to": 16, "weight": 1, "width": 3}, {"color": "#000000", "from": 13, "title": "pop, post-teen pop", "to": 18, "weight": 1, "width": 3}, {"color": "#000000", "from": 13, "title": "pop, post-teen pop", "to": 19, "weight": 1, "width": 3}, {"color": "#000000", "from": 13, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 13, "title": "pop, post-teen pop", "to": 24, "weight": 1, "width": 3}, {"color": "#000000", "from": 14, "title": "broadway, hollywood, show tunes", "to": 21, "weight": 1, "width": 5}, {"color": "#000000", "from": 14, "title": "broadway, show tunes", "to": 22, "weight": 1, "width": 3}, {"color": "#000000", "from": 14, "title": "hollywood, show tunes", "to": 20, "weight": 1, "width": 3}, {"color": "#000000", "from": 15, "title": "pop", "to": 16, "weight": 1, "width": 1}, {"color": "#000000", "from": 15, "title": "pop", "to": 18, "weight": 1, "width": 1}, {"color": "#000000", "from": 15, "title": "pop", "to": 19, "weight": 1, "width": 1}, {"color": "#000000", "from": 15, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 15, "title": "pop", "to": 24, "weight": 1, "width": 1}, {"color": "#000000", "from": 16, "title": "pop, post-teen pop", "to": 18, "weight": 1, "width": 3}, {"color": "#000000", "from": 16, "title": "pop, post-teen pop", "to": 19, "weight": 1, "width": 3}, {"color": "#000000", "from": 16, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 16, "title": "pop, post-teen pop", "to": 24, "weight": 1, "width": 3}, {"color": "#000000", "from": 16, "title": "neo mellow", "to": 17, "weight": 1, "width": 1}, {"color": "#000000", "from": 18, "title": "pop, post-teen pop", "to": 19, "weight": 1, "width": 3}, {"color": "#000000", "from": 18, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 18, "title": "pop, post-teen pop", "to": 24, "weight": 1, "width": 3}, {"color": "#000000", "from": 19, "title": "pop", "to": 23, "weight": 1, "width": 1}, {"color": "#000000", "from": 19, "title": "pop, post-teen pop", "to": 24, "weight": 1, "width": 3}, {"color": "#000000", "from": 20, "title": "hollywood, show tunes", "to": 21, "weight": 1, "width": 3}, {"color": "#000000", "from": 20, "title": "show tunes", "to": 22, "weight": 1, "width": 1}, {"color": "#000000", "from": 21, "title": "broadway, show tunes", "to": 22, "weight": 1, "width": 3}, {"color": "#000000", "from": 23, "title": "pop", "to": 24, "weight": 1, "width": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

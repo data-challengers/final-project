@@ -7,7 +7,9 @@ from pyvis.network import Network
 import networkx as nx
 import unwrapped.genre_network as gn
 import unwrapped.streamgraph as sg
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, request, redirect, url_for, send_from_directory
+from werkzeug.utils import secure_filename
+
 
 import json
 
@@ -19,7 +21,10 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'unwrapped.sqlite'),
     )
+    UPLOAD_FOLDER = app.root_path + '/data/uploads/'
+    ALLOWED_EXTENSIONS = {'json'}
 
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -32,33 +37,51 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+    def allowed_file(filename):
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
     @app.route("/")
-    def index():
-        path = app.root_path + '/data/StreamingHistory1.json'
-        spotify_data = sg.read_data(path)
-        long_listens = sg.get_long_listens(spotify_data)
-        chart_json = sg.render_chart(long_listens)
-        # chart_json = {
-        # "$schema": 'https://vega.github.io/schema/vega-lite/v5.json',
-        # "description": 'A simple bar chart with embedded data.',
-        # "data": {
-        #   "values": [
-        #     {"a": 'A', "b": 28},
-        #     {"a": 'B', "b": 55},
-        #     {"a": 'C', "b": 43},
-        #     {"a": 'D', "b": 91},
-        #     {"a": 'E', "b": 81},
-        #     {"a": 'F', "b": 53},
-        #     {"a": 'G', "b": 19},
-        #     {"a": 'H', "b": 87},
-        #     {"a": 'I', "b": 52}
-        #   ]
-        # }
-        # }
-        return render_template("index.html",
-        data=json.dumps(chart_json))
+    # def index():
+    #     path = app.root_path + '/data/StreamingHistory1.json'
+    #     spotify_data = sg.read_data(path)
+    #     long_listens = sg.get_long_listens(spotify_data)
+    #     chart_json = sg.render_chart(long_listens)
+    #     return render_template("index.html", data=json.dumps(chart_json))
 
+    @app.route('/', methods=['GET', 'POST'])
+    def upload_file():
+        if request.method == 'POST':
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # return redirect(url_for('uploaded_file',
+                #                         filename=filename))
+                path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                spotify_data = sg.read_data(path)
+                long_listens = sg.get_long_listens(spotify_data)
+                chart_json = sg.render_chart(long_listens)
+                return render_template("index.html", data=json.dumps(chart_json))
+
+        else:
+            return render_template("index.html", data=json.dumps(dict()))
+
+    @app.route('/uploads/<filename>')
+    def uploaded_file(filename):
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                filename)
+
+    
     @app.route('/data/spotify_top_artists.html')
     def show_network():
         path  = app.root_path + '/data/spotify_top_artists.html'
@@ -69,6 +92,4 @@ def create_app(test_config=None):
         gn.genre_network_graph(short_term_top, path)
         return flask.send_file(path)
 
-    # @app.route('/data/streamgraph.json')
-    # def show_streamgraph():
     return app

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type = "text/css" href="{{ url_for('return_css') }}" >
+    <link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename='style.css') }}" >
     <title>Spotify Unwrapped</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
@@ -12,7 +12,7 @@
 
     <!-- General page set up -->
     <div class = "logo">
-      <p><img src= "logo.png" width = 150 height = 150 alt="logo"></p>
+      <p><img src= "{{ url_for('static', filename='images/logo.png') }}" width = 150 height = 150 alt="logo"></p>
     </div>
 
     <div class = "title">

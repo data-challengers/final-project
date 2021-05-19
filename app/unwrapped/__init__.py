@@ -92,11 +92,4 @@ def create_app(test_config=None):
         gn.genre_network_graph(short_term_top, path)
         return flask.send_file(path)
         
-    @app.route('/data/style.css')
-    def return_css():
-        path  = app.root_path + '/data/style.css'
-        flask.send_file(path)
-
-
-
     return app

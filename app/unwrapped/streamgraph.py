@@ -26,28 +26,24 @@ def get_long_listens(spotify_data):
     long_listens = long_listens[['endTime', 'artistName', 'seconds_played']].groupby(['endTime', 'artistName'], as_index = False)['seconds_played'].agg('sum')
 
     # keep top 5 listened artists in a period
-    long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(5)
+    long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(20)
     return long_listens
 
 def render_chart(long_listens):
     alt.data_transformers.disable_max_rows()
+    
+    selection = alt.selection_multi(fields=['artistName'], bind='legend')
+
 
     chart = alt.Chart(long_listens).mark_area().encode(
-        x = 'endTime',
-        y = 'seconds_played',
-        color = 'artistName'
-    ).properties(
-        height = 'container',
-        width = 'container',
-    )
+        alt.X('endTime'),
+        alt.Y('seconds_played', stack='center', axis=None),
+        alt.Color('artistName',
+            scale=alt.Scale(scheme='category20b')
+        ),
+            opacity=alt.condition(selection, alt.value(1), alt.value(0.2))
+    ).add_selection(
+        selection
+    ).interactive()
 
-
-    text = chart.mark_text(
-        align='left',
-        baseline='middle',
-        dx=7
-    ).encode(
-        text='artistName'
-    )
-
-    return (text + chart).to_dict()
+    return (chart).to_dict()

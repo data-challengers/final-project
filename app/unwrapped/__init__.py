@@ -41,15 +41,16 @@ def create_app(test_config=None):
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    def write_graph(term):
-        path  = app.root_path + '/data/spotify_top_artists.html'
-        cid = os.environ.get('SPOTIFY_UNWRAPPED_CLIENT_ID')
-        secret = os.environ.get('SPOTIFY_UNWRAPPED_CLIENT_SECRET')
-        uri = os.environ.get('SPOTIFY_UNWRAPPED_CALLBACK')
-        print(term)
-        res = gn.get_user_top_artists_term(cid, secret, uri, term)
-        return gn.genre_network_graph(res, path)
+    graph_path  = app.root_path + '/data/spotify_top_artists.html'
+    cid = os.environ.get('SPOTIFY_UNWRAPPED_CLIENT_ID')
+    secret = os.environ.get('SPOTIFY_UNWRAPPED_CLIENT_SECRET')
+    uri = os.environ.get('SPOTIFY_UNWRAPPED_CALLBACK')
+    top_artists = gn.get_user_top_artists_dict(cid, secret, uri)
 
+    def write_graph(term):
+        term = term.replace('-', "_")
+        res = pd.DataFrame(top_artists[term])
+        return gn.genre_network_graph(res, graph_path)
 
     @app.route('/', methods=['GET', 'POST'])
     def upload_file():
@@ -67,8 +68,6 @@ def create_app(test_config=None):
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                # return redirect(url_for('uploaded_file',
-                #                         filename=filename))
                 path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 spotify_data = sg.read_data(path)
                 long_listens = sg.get_long_listens(spotify_data)
@@ -80,7 +79,7 @@ def create_app(test_config=None):
             return render_template("index.html", data=json.dumps(dict()))
 
     @app.route('/streamgraph', methods=['POST'])
-    def hello():
+    def update_network():
         term = request.json
         write_graph(term)
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
@@ -93,11 +92,6 @@ def create_app(test_config=None):
     @app.route('/data/spotify_top_artists.html')
     def show_network():
         path  = app.root_path + '/data/spotify_top_artists.html'
-        # cid = os.environ.get('SPOTIFY_UNWRAPPED_CLIENT_ID')
-        # secret = os.environ.get('SPOTIFY_UNWRAPPED_CLIENT_SECRET')
-        # uri = os.environ.get('SPOTIFY_UNWRAPPED_CALLBACK')
-        # short_term_top, med_term_top, long_term_top = gn.get_user_top_artists(cid, secret, uri)
-        # gn.genre_network_graph(short_term_top, path)
         return flask.send_file(path)
         
     return app

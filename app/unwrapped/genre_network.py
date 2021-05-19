@@ -34,6 +34,32 @@ def get_user_top_artists(cid, secret, uri):
     long_term_top = pd.DataFrame(top_artists['long_term'])
     return short_term_top, med_term_top, long_term_top
 
+def get_user_top_artists_dict(cid, secret, uri):
+    """
+    :param: cid - Spotify app client identification 
+    :param: secret - App-specific client secret
+    :param: uri - App-specific uri (must be registered on Spotify Developer Dashboard)
+    This function will run upon app load.
+    Prompts the user for Spotify login and gets top artist lists.
+    
+    References: 
+    https://github.com/plamere/spotipy/blob/master/examples/my_top_artists.py
+    https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-users-top-artists-and-tracks
+    """
+    scope = "user-top-read"
+    ranges = ['short_term', 'medium_term', 'long_term']
+
+    # Access indiv spotify account (prompts sign in on localhost uri)
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, client_id=cid, client_secret=secret, redirect_uri=uri))
+
+    # Get top artists
+    top_artists = {}
+    for sp_range in ['short_term', 'medium_term', 'long_term']:
+        results = sp.current_user_top_artists(time_range=sp_range, limit=25)
+        top_artists[sp_range] = results['items']
+    
+    return top_artists
+
 def get_user_top_artists_term(cid, secret, uri, term):
     term = term.replace("-", "_")
     scope = "user-top-read"

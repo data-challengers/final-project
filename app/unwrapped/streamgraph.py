@@ -17,7 +17,7 @@ def get_long_listens(spotify_data):
     long_listens = spotify_data[spotify_data['seconds_played'] >= 120]
 
     # floor endtime by date
-    #long_listens['endTime'] = long_listens['endTime'].dt.round('D') 
+    long_listens['endTime'] = long_listens['endTime'].dt.round('D') 
 
     # floor endtime by month
     long_listens['endTime'] = long_listens['endTime'].dt.to_period('M').dt.to_timestamp()
@@ -26,7 +26,7 @@ def get_long_listens(spotify_data):
     long_listens = long_listens[['endTime', 'artistName', 'seconds_played']].groupby(['endTime', 'artistName'], as_index = False)['seconds_played'].agg('sum')
 
     # keep top 20 listened artists in a period
-    long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(20)
+    long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(5)
     return long_listens
 
 def render_chart(long_listens):

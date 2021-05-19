@@ -26,7 +26,7 @@ def get_long_listens(spotify_data):
     long_listens = long_listens[['endTime', 'artistName', 'seconds_played']].groupby(['endTime', 'artistName'], as_index = False)['seconds_played'].agg('sum')
 
     # keep top 5 listened artists in a period
-    long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(5)
+    long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(20)
     return long_listens
 
 def render_chart(long_listens):

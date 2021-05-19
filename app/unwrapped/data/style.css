@@ -6,7 +6,8 @@
   /* Main body style */
   body {
     position: relative;
-    background-color:	#000000;
+    background-color:	#212121;
+    color: #FFFFFF;
     font-family: Verdana, sans-serif;
   }
   
@@ -19,11 +20,10 @@
     margin-top: .5in;
     margin-left: 0.25in;
   }
-  
-  /* Elements present on every page */
+
   .logo {
     position: absolute;
-    top: -.2in;
+    top: -.1in;
     left: 0.2in;
   }
   
@@ -31,65 +31,12 @@
     position: absolute;
     color: #1DB954;
     left: 2.25in;
-    top: -.1in;
+    top: 0.1in;
     font-family: Tahoma, sans-serif;
     font-size: 20px;
     font-weight: bold;
-    letter-spacing: 10px;
-    width: 25%;
-  }
-  
-  
-  .navbar {
-    background-color: #1DB954;
-    width: 100%;
-    font-family: verdana;
-    text-align: right;
-    font-size: 15px;
-    position: absolute;
-    top: 1.5in;
-    left: 0;
-    padding-left: 0;
-    min-width: 5in;
-  }
-  
-  .navbar ul {
-    padding: 0px;
-  }
-  
-  .navbar li {
-    list-style-type: none;
-    display: inline-block;
-  }
-  
-  .navbar li a {
-    background-color: #cae1e3;
-    color: 	#1a1140;
-    text-decoration: none;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 15px;
-  }
-  
-  .navbar li a:hover {
-    background-color: #87ADB1;
-  }
-  
-  .pagetitle {
-    position: absolute;
-    text-align:left;
-    left:.4in;
-    top:2.25in;
-    z-index: 2;
-    color: white;
-    background-color: #1DB954;
-    width: 3in;
-    text-align: center;
-    padding-top: .05in;
-    padding-bottom: .05in;
-    border: solid;
-    border-width: 15.5px;
-    border-color: white;
+    letter-spacing: 5px;
+    width: 50%;
   }
   
   .header {
@@ -97,69 +44,20 @@
     z-index: 1;
     background-color: #1DB954;
     width: 100%;
-    height: 1.05in;
-    top: 2.25in;
-    padding-top: .05in;
-    padding-bottom: .05in;
+    height: 0.5in;
+    top: 1.8in;
     padding-left:0;
   }
   
   .footer {
-    z-index: 10;
-    position: fixed;
-    bottom: 0in;
+    position: absolute;
+    bottom: 0;
     width: 100%;
-    height: .5in;
-    background-color: #000000;
-    color: white;
-    text-align: center;
-    margin-top: .5in;
-    padding-top: .5in;
+    height: 1in;
   }
-  
-  .row{
-    width: 100%;
-  }
-  
-  .column {
-    float: left;
-    padding-left: .2in;
-    padding-top: .5in;
-    width: 33%;
-  }
-  
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  
-  .column h3 {
-    text-align: center;
-    background-color: lightgrey;
-    color: black;
-    margin-bottom: .04in;
-  }
-  
-  .column a {
-    position: relative;
-    display: block;
-    text-align:center;
-    top: -4.75in;
-    padding-top: 2.2in;
-    padding-bottom: 2.1in;
-    opacity:0;
-    background-color: lightgrey;
-    color: black;
-    width: 100%;
-    text-decoration: none;
-    font-size: 40px;
-    font-weight:bold;
-  }
-  
-  /* Hover over pictures */
-  .column a:hover {
-    opacity:0.75;
+
+  .footer #p1{
+    margin-top: .25in;
   }
   
   .center {
@@ -185,35 +83,66 @@
   
   #introParagraph {
     position: absolute;
-    left: 0in;
-    top: 8in;
+    left: 0.2in;
+    top: 2.25in;
     width: 100%;
+    padding-right:0.4in;
+    padding-left:0.4in;
   }
   
-  #openingParagraph {
+  #genreGraph {
+    display:block; 
     position: absolute;
     left: .4in;
-    top: 3.5in;
-    /* width: 50%; */
+    top: 4in;
     min-width: 600px;
     margin-bottom: .75in;
-  
+    padding-right:0.4in;
+    padding-left:0.4in;
+  }
+
+  #streamGraph {
+    display:block; 
+    position: absolute;
+    left: .4in;
+    top: 12in;
+    min-width: 600px;
+    margin-bottom: .75in;
+    padding-right:0.4in;
+    padding-left:0.4in;
   }
   
-  #openingParagraph a:hover {
-    opacity:0.75;
+  #streamVis {
+    height:650px;
+    width:100%;
+  }
+
+  #genreVis {
+    width:100%;
+    height:500px;
+  }
+
+  #form {
+    position: absolute;
+    left: 0.2in;
+    top: 2.25in;
+    width: 100%;
+  }
+
+  #leftImage {
+    position: relative;
+    float: left;
+    width: 10%;
+    margin-right: 0in;
+    margin-left: 0.01in;
   }
   
   #rightImage {
+    position: relative;
     float: right;
-    margin-right: .4in;
-    margin-left: .4in;
-  }
-  
-  #surveyMessage {
-    position: absolute;
-    left: .4in;
-    top: 3.5in;
+    width:75%;
+    margin-right: 0.01in;
+    margin-left: 0in;
   }
   
   #centralImage {
@@ -221,32 +150,3 @@
     top: 4in;
     width: 100%;
   }
-  
-  #nextButton {
-    float: right;
-    background-color: #1A1140;
-    color: white;
-    width: auto;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: auto;
-  }
-  
-  #nextButton:hover {
-    opacity: 0.75;
-  }
-  
-  #content {
-    position: absolute;
-    top: 4in;
-    left: .5in;
-  }
-  
-  #sepBar {
-    width: 100%;
-    background-color: #1A1140;
-    height: 0.25in;
-  }
-  

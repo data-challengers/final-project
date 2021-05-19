@@ -60,21 +60,6 @@ def get_user_top_artists_dict(cid, secret, uri):
     
     return top_artists
 
-def get_user_top_artists_term(cid, secret, uri, term):
-    term = term.replace("-", "_")
-    scope = "user-top-read"
-
-    # Access indiv spotify account (prompts sign in on localhost uri)
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, client_id=cid, client_secret=secret, redirect_uri=uri))
-
-    # Get top artists
-    results = sp.current_user_top_artists(time_range=term, limit=25)
-    top_artists=results['items']
-    
-    # Top artists lists ranked by user-specific popularity
-    return pd.DataFrame(top_artists)
-
-
 def set_pop_color(pop):
     color = ""
     if pop >= 95:

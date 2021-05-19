@@ -1,13 +1,9 @@
 import os
 import flask
 import pandas as pd
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
-from pyvis.network import Network
-import networkx as nx
 import unwrapped.genre_network as gn
 import unwrapped.streamgraph as sg
-from flask import Flask, render_template, flash, request, redirect, url_for, send_from_directory, request
+from flask import Flask, render_template, flash, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 
 

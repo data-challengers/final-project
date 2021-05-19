@@ -6,6 +6,27 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+    <script>
+      function getRadioButtonValue() {
+        return document.querySelector('input[name = "term"]:checked').value;
+      }
+      
+      function refreshFrame(id) {
+        document.getElementById(id).contentWindow.location.reload(true);
+      }
+
+      async function postSelection() {
+        const response = await fetch('/streamgraph',
+          {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(getRadioButtonValue()),
+        });
+        return response.json();
+      }
+    </script>
   </head>
   <!-- position:absolute;top:0px;width:50%;height:100vh; -->
   <body>
@@ -48,12 +69,12 @@
       <br></br>
       <div id = "rightImage">
           <div id="radio-buttons">
-            <input type="radio" name="term" id="example1" value="Short-term" />
-            <label for="example1">Example 1</label>
-            <input type="radio" name="term" id="example2" value="Medium-term" />
-            <label for="example1">Example 2</label>
-            <input type="radio" name="term" id="example3" value="Long-term" />
-            <label for="example1">Example 3</label>      
+            <input type="radio" name="term" id="short-term" value="short-term" onclick="postSelection().then(() => refreshFrame('genreVis'));" checked/>
+            <label for="short-term">short-term</label>
+            <input type="radio" name="term" id="medium-term" value="medium-term" onclick="postSelection().then(() => refreshFrame('genreVis'));" />
+            <label for="medium-term">medium-term</label>
+            <input type="radio" name="term" id="long-term" value="long-term" onclick="postSelection().then(() => refreshFrame('genreVis'));"/>
+            <label for="long-term">long-term</label>      
           </div>
         <iframe id = "genreVis" src="{{ url_for('show_network') }}"></iframe>
       </div>

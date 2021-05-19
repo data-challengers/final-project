@@ -17,15 +17,15 @@ def get_long_listens(spotify_data):
     long_listens = spotify_data[spotify_data['seconds_played'] >= 120]
 
     # floor endtime by date
-    long_listens['endTime'] = long_listens['endTime'].dt.round('D') 
+    #long_listens['endTime'] = long_listens['endTime'].dt.round('D') 
 
     # floor endtime by month
     long_listens['endTime'] = long_listens['endTime'].dt.to_period('M').dt.to_timestamp()
 
     # group by endtime and artist, take sum of seconds played
-    long_listens = long_listens[['endTime', 'artistName', 'seconds_played']].groupby(['endTime', 'artistName'], as_index = False)['seconds_played'].agg('sum')
+    #long_listens = long_listens[['endTime', 'artistName', 'seconds_played']].groupby(['endTime', 'artistName'], as_index = False)['seconds_played'].agg('sum')
 
-    # keep top 5 listened artists in a period
+    # keep top 20 listened artists in a period
     long_listens = long_listens.sort_values('seconds_played').groupby(['endTime']).tail(20)
     return long_listens
 

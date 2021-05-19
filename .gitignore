@@ -1,3 +1,7 @@
 .ipynb_checkpoints
 .DS_Store
 app/unwrapped/data/spotify_top_artists.html
+node_modules/
+app/.cache
+app/unwrapped/__pycache__/
+app/unwrapped/data/uploads/

@@ -1,6 +1,7 @@
 # Spotify Unwrapped
 
-Generates visual summaries of a user's listening history
+Welcome to Spotify (Un)wrapped...
+...where you can view your Spotify analytics any time of year! Explore our interactive genre network graph, or upload your Spotify streaming history to view your stream history graph. Happy exploring!
 
 To run:
 - Clone the repository: `git clone https://github.com/data-challengers/final-project.git`
